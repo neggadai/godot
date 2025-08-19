@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dr0xs1i7e8yer"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_sgp6g"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(64, 64)
+
+[node name="Main" type="Game"]
+
+[node name="Main#Player" type="Player" parent="."]
+material = SubResource("CanvasItemMaterial_sgp6g")
+position = Vector2(640, 360)
+
+[node name="Main_Player#CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1")

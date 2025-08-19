@@ -1,0 +1,25 @@
+# Build artifacts
+build/
+bin/
+*.dll
+*.lib
+*.pdb
+*.ilk
+*.exp
+
+# IDE files
+.vs/
+*.vcxproj.user
+*.vcxproj.filters
+
+# Godot
+.godot/
+.import/
+*.tmp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

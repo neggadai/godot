@@ -1,0 +1,13 @@
+[configuration]
+
+entry_symbol = "gdextension_init"
+compatibility_minimum = "4.4"
+
+[libraries]
+
+windows.debug.x86_64 = "res://bin/win64/godot_game.win64.template_debug.dev.x86_64.dll"
+windows.release.x86_64 = "res://bin/win64/godot_game.win64.template_release.x86_64.dll"
+linux.debug.x86_64 = "res://bin/linux/libgodot_game.linux.template_debug.dev.x86_64.so"
+linux.release.x86_64 = "res://bin/linux/libgodot_game.linux.template_release.x86_64.so"
+macos.debug = "res://bin/macos/libgodot_game.macos.template_debug.dev.universal.dylib"
+macos.release = "res://bin/macos/libgodot_game.macos.template_release.universal.dylib"
