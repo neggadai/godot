@@ -5,8 +5,7 @@
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/godot.hpp>
 
-#include "player.h"
-#include "game.h"
+#include "simple_osu_game.h"
 
 using namespace godot;
 
@@ -15,8 +14,7 @@ void initialize_game_module(ModuleInitializationLevel p_level) {
         return;
     }
 
-    ClassDB::register_class<Player>();
-    ClassDB::register_class<Game>();
+    ClassDB::register_class<SimpleOsuGame>();
 }
 
 void uninitialize_game_module(ModuleInitializationLevel p_level) {
