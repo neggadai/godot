@@ -1,6 +1,9 @@
 #include "simple_osu_game.h"
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
+#include <godot_cpp/classes/image_texture.hpp>
+#include <godot_cpp/classes/image.hpp>
+#include <cmath>
 
 using namespace godot;
 
@@ -188,7 +191,7 @@ void SimpleOsuGame::update_circles(float delta_time) {
                     
                     // Change color as it gets closer to hit time
                     if (time_left < 0.5f) {
-                        circles[i].visual->set_color(Color(1, 0.7f, 0.1f, 1)); // Orange when close
+                        circles[i].visual->set_modulate(Color(1, 0.7f, 0.1f, 1)); // Orange when close
                     }
                 }
             }
@@ -202,8 +205,8 @@ void SimpleOsuGame::check_circle_hit(Vector2 click_pos) {
     
     for (int i = 0; i < MAX_CIRCLES; i++) {
         if (circles[i].is_active && !circles[i].is_hit) {
-            // Circle center (account for visual offset)
-            Vector2 circle_center = circles[i].position + Vector2(50, 50);
+            // Circle center (Sprite2D position is already center-based)
+            Vector2 circle_center = circles[i].position;
             float distance = click_pos.distance_to(circle_center);
             
             // Debug: Show circle info
@@ -214,7 +217,7 @@ void SimpleOsuGame::check_circle_hit(Vector2 click_pos) {
                 circles[i].is_hit = true;
                 
                 if (circles[i].visual) {
-                    circles[i].visual->set_color(Color(1, 1, 1, 1)); // Flash white
+                    circles[i].visual->set_modulate(Color(1, 1, 1, 1)); // Flash white
                     circles[i].visual->queue_free();
                     circles[i].visual = nullptr;
                 }
@@ -251,11 +254,35 @@ void SimpleOsuGame::update_ui() {
     }
 }
 
-ColorRect* SimpleOsuGame::create_circle(Vector2 pos, Color color, float size) {
-    ColorRect* circle = memnew(ColorRect);
-    circle->set_size(Vector2(size, size));
-    circle->set_position(pos - Vector2(size/2, size/2)); // Center on position
-    circle->set_color(color);
-    add_child(circle);
-    return circle;
+Sprite2D* SimpleOsuGame::create_circle(Vector2 pos, Color color, float size) {
+    // Create a circular texture programmatically
+    int tex_size = (int)size;
+    Ref<Image> image = Image::create_empty(tex_size, tex_size, false, Image::FORMAT_RGBA8);
+    
+    // Draw a circle
+    for (int y = 0; y < tex_size; y++) {
+        for (int x = 0; x < tex_size; x++) {
+            float center_x = tex_size / 2.0f;
+            float center_y = tex_size / 2.0f;
+            float dist = sqrt((x - center_x) * (x - center_x) + (y - center_y) * (y - center_y));
+            
+            if (dist <= size / 2.0f) {
+                // Inside circle - use the specified color
+                image->set_pixel(x, y, color);
+            } else {
+                // Outside circle - transparent
+                image->set_pixel(x, y, Color(0, 0, 0, 1));
+            }
+        }
+    }
+    
+    // Create texture from image
+    Ref<ImageTexture> texture = ImageTexture::create_from_image(image);
+    
+    // Create sprite
+    Sprite2D* sprite = memnew(Sprite2D);
+    sprite->set_texture(texture);
+    sprite->set_position(pos); // Sprite position is center-based by default
+    add_child(sprite);
+    return sprite;
 }

@@ -3,6 +3,7 @@
 
 #include <godot_cpp/classes/node2d.hpp>
 #include <godot_cpp/classes/label.hpp>
+#include <godot_cpp/classes/sprite2d.hpp>
 #include <godot_cpp/classes/color_rect.hpp>
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/viewport.hpp>
@@ -29,7 +30,7 @@ private:
     
     // Simple hit circles
     struct SimpleHitCircle {
-        ColorRect* visual;
+        Sprite2D* visual;
         Vector2 position;
         float spawn_time;
         float hit_time;
@@ -65,7 +66,7 @@ public:
     void update_ui();
     
     // Utilities
-    ColorRect* create_circle(Vector2 pos, Color color, float size);
+    Sprite2D* create_circle(Vector2 pos, Color color, float size);
 };
 
 }
